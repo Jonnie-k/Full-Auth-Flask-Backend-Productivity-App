@@ -33,6 +33,16 @@ def create_app():
         from flask import jsonify
         return jsonify({"error": "Method not allowed."}), 405
 
+    @jwt.unauthorized_loader
+    def missing_token_response(reason):
+        from flask import jsonify
+        return jsonify({"error": "Authorization token is missing or invalid."}), 401
+
+    @jwt.invalid_token_loader
+    def invalid_token_response(reason):
+        from flask import jsonify
+        return jsonify({"error": "Token is invalid."}), 422
+
     from app.routes.auth import auth_bp, token_blocklist
 
     @jwt.token_in_blocklist_loader
