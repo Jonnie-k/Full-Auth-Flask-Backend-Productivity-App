@@ -130,3 +130,18 @@ def test_create_note_invalid_category(client, auth_headers):
         "category": "invalid_category",
     }, headers=auth_headers)
     assert resp.status_code == 422
+
+
+def test_get_note_not_owned(client, db, auth_headers):
+    from app.models.user import User
+    other = User(username="reader_other", email="reader_other@test.com")
+    other.password = "pass123"
+    db.session.add(other)
+    db.session.commit()
+
+    note = Note(title="Secret Note", content="private content", user_id=other.id)
+    db.session.add(note)
+    db.session.commit()
+
+    resp = client.get(f"/notes/{note.id}", headers=auth_headers)
+    assert resp.status_code == 404
