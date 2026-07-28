@@ -58,3 +58,12 @@ def test_logout(client, auth_headers):
     # Token should be revoked now
     resp2 = client.get("/auth/me", headers=auth_headers)
     assert resp2.status_code == 401
+
+
+def test_signup_short_password(client, db):
+    resp = client.post("/auth/signup", json={
+        "username": "shortpass",
+        "email": "short@example.com",
+        "password": "abc",
+    })
+    assert resp.status_code == 422
