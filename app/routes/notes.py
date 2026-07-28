@@ -13,7 +13,7 @@ notes_bp = Blueprint("notes", __name__)
 def get_notes():
     user_id = int(get_jwt_identity())
     page = request.args.get("page", 1, type=int)
-    per_page = request.args.get("per_page", 10, type=int)
+    per_page = min(request.args.get("per_page", 10, type=int), 50)
 
     pagination = (
         Note.query.filter_by(user_id=user_id)
