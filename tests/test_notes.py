@@ -108,3 +108,16 @@ def test_delete_note_not_owned(client, db, auth_headers):
 
     resp = client.delete(f"/notes/{note.id}", headers=auth_headers)
     assert resp.status_code == 404
+
+
+def test_per_page_capped_at_50(client, auth_headers, db):
+    from app.models.user import User
+    user = User.query.filter_by(username="tester").first()
+    for i in range(10):
+        note = Note(title=f"Cap Note {i}", content="content", user_id=user.id)
+        db.session.add(note)
+    db.session.commit()
+
+    resp = client.get("/notes?per_page=100", headers=auth_headers)
+    assert resp.status_code == 200
+    assert resp.get_json()["per_page"] == 50
