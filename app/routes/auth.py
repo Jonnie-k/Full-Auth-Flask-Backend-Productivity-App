@@ -37,6 +37,8 @@ def signup():
 @auth_bp.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "Request body must be JSON."}), 400
     username = data.get("username")
     password = data.get("password")
 
