@@ -121,3 +121,12 @@ def test_per_page_capped_at_50(client, auth_headers, db):
     resp = client.get("/notes?per_page=100", headers=auth_headers)
     assert resp.status_code == 200
     assert resp.get_json()["per_page"] == 50
+
+
+def test_create_note_invalid_category(client, auth_headers):
+    resp = client.post("/notes", json={
+        "title": "Bad Category",
+        "content": "Some content",
+        "category": "invalid_category",
+    }, headers=auth_headers)
+    assert resp.status_code == 422
