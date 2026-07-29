@@ -42,15 +42,12 @@ flask db upgrade
 
 # 6. Seed the database
 python seed.py
-```
 
 ---
 
 ## Running the App
 
-```bash
 flask run
-```
 
 The API will be available at `http://127.0.0.1:5000`.
 
@@ -58,9 +55,7 @@ The API will be available at `http://127.0.0.1:5000`.
 
 ## Running Tests
 
-```bash
 pytest
-```
 
 ---
 
@@ -75,20 +70,6 @@ pytest
 | DELETE | /auth/logout   | Yes           | Revoke the current JWT token       |
 | GET    | /auth/me       | Yes           | Get the currently logged-in user   |
 
-#### POST /auth/signup
-```json
-{ "username": "alice", "email": "alice@example.com", "password": "securepass" }
-```
-Returns `201` with `{ "user": {...}, "access_token": "..." }`
-
-#### POST /auth/login
-```json
-{ "username": "alice", "password": "securepass" }
-```
-Returns `200` with `{ "user": {...}, "access_token": "..." }`
-
----
-
 ### Notes
 
 All notes endpoints require the `Authorization: Bearer <token>` header.
@@ -101,64 +82,10 @@ All notes endpoints require the `Authorization: Bearer <token>` header.
 | PATCH  | /notes/:id         | Update a note (partial update)       |
 | DELETE | /notes/:id         | Delete a note                        |
 
-#### GET /notes — Query Parameters
-| Param    | Default | Description              |
-|----------|---------|--------------------------|
-| page     | 1       | Page number              |
-| per_page | 10      | Number of results/page   |
-
-Example response:
-```json
-{
-  "notes": [...],
-  "total": 25,
-  "pages": 3,
-  "current_page": 1,
-  "per_page": 10
-}
-```
-
-#### POST /notes — Request Body
-```json
-{
-  "title": "My Note",
-  "content": "Note content here",
-  "category": "work",
-  "is_pinned": false
-}
-```
-`category` must be one of: `general`, `work`, `personal`, `ideas`
-
----
-
-## Project Structure
-
-```
-├── app/
-│   ├── __init__.py        # App factory
-│   ├── models/
-│   │   ├── user.py        # User model
-│   │   └── note.py        # Note model
-│   ├── routes/
-│   │   ├── auth.py        # Auth endpoints
-│   │   └── notes.py       # Notes CRUD endpoints
-│   └── schemas/
-│       └── __init__.py    # Marshmallow schemas
-├── tests/
-│   ├── conftest.py        # Pytest fixtures
-│   ├── test_auth.py       # Auth tests
-│   └── test_notes.py      # Notes tests
-├── seed.py                # Database seeder
-├── run.py                 # App entry point
-├── Pipfile
-└── .env
-```
-
----
-
 ## Test Credentials (after seeding)
 
-```
 username: testuser
 password: password123
-```
+
+### Author
+John King'oo
